@@ -6,7 +6,6 @@ pillow>=11.2.1
 python-dotenv>=1.1.1
 python-telegram-bot==20.8
 requests>=2.32.4
-telegram>=0.0.1
 telethon>=1.40.0
 trafilatura>=2.0.0
 yt-dlp>=2025.6.25
