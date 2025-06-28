@@ -279,9 +279,9 @@ class AnimeMenus:
 # Menu text templates with anime styling
 MENU_TEXTS = {
     "welcome": """
-🌟 **Welcome to Anime Bot!** 🌟
+🌟 **Welcome to Luco Bot!** 🌟
 
-✨ Your magical assistant for downloads, AI art, and more!
+✨ Your magical assistant for Recharge, downloads, AI art, and more!
 
 **🎯 What can I do?**
 • 🎬 Download YouTube videos & music

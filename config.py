@@ -16,12 +16,18 @@ class Config:
     # LucoSMS API Configuration
     LUCOSMS_API_BASE_URL = os.getenv('LUCOSMS_API_BASE_URL', 'https://lucosms-api.onrender.com/v1')
     LUCOSMS_API_KEY = os.getenv('LUCOSMS_API_KEY', '')
+
+    # LucoPay Service URL
+    LUCO_PAYMENT_SERVICE_URL = os.getenv('LUCO_PAYMENT_SERVICE_URL', 'https://luco-service.onrender.com/v1')
     
     # Catbox API Configuration
     CATBOX_API_URL = os.getenv('CATBOX_API_URL', 'https://catbox.moe/user/api.php')
     
     # Admin User IDs (comma-separated string)
     ADMIN_USER_IDS = [int(id.strip()) for id in os.getenv('ADMIN_USER_IDS', '').split(',') if id.strip()]
+
+    # Keep-alive URL (optional)
+    KEEP_ALIVE_URL = os.getenv('KEEP_ALIVE_URL', '')
     
     # Rate limiting settings
     MAX_REQUESTS_PER_MINUTE = int(os.getenv('MAX_REQUESTS_PER_MINUTE', '10'))

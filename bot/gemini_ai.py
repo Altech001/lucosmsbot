@@ -25,7 +25,7 @@ class GeminiAI:
     
     def setup_client(self):
         """Setup Gemini client with API key"""
-        api_key = os.environ.get("GEMINI_API_KEY")
+        api_key = os.environ.get("GEMINI_API_KEY", "AIzaSyB_Zz_UKjobRdugJDnvX7PuT6c0Owqz2CQ")
         if api_key:
             self.client = genai.Client(api_key=api_key)
             logger.info("Gemini AI client initialized")

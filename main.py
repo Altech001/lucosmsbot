@@ -6,10 +6,17 @@ Telegram Bot for User Management, Account Recharge, and File Backup
 import logging
 import asyncio
 import os
-from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters
+from telegram.ext import (
+    Application, CommandHandler, MessageHandler, CallbackQueryHandler, 
+    ConversationHandler, filters
+)
 from bot.commands import (
-    start_command, help_command, check_user_command, recharge_command,
+    start_command, help_command, check_user_command, 
     backup_file_command, admin_command, stats_command
+)
+from bot.payments import (
+    start_recharge, ask_for_amount, generate_payment_link, verify_payment, cancel_recharge,
+    EMAIL, AMOUNT, CONFIRMATION
 )
 from bot.handlers import handle_file_upload, handle_text_message, error_handler
 from bot.advanced_commands import (
@@ -18,6 +25,7 @@ from bot.advanced_commands import (
     handle_callback_query
 )
 from config import Config
+from bot.keep_alive import keep_alive_task
 
 # Configure logging
 logging.basicConfig(
@@ -37,7 +45,20 @@ def main():
     application.add_handler(CommandHandler("menu", show_main_menu))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("check", check_user_command))
-    application.add_handler(CommandHandler("recharge", recharge_command))
+    recharge_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('recharge', start_recharge)],
+        states={
+            EMAIL: [MessageHandler(filters.TEXT & ~filters.COMMAND, ask_for_amount)],
+            AMOUNT: [
+                CallbackQueryHandler(generate_payment_link, pattern='^recharge_'),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, generate_payment_link)
+            ],
+            CONFIRMATION: [CallbackQueryHandler(verify_payment, pattern='^verify_')]
+        },
+        fallbacks=[CommandHandler('cancel', cancel_recharge)],
+        per_message=False
+    )
+    application.add_handler(recharge_conv_handler)
     application.add_handler(CommandHandler("backup", backup_file_command))
     application.add_handler(CommandHandler("admin", admin_command))
     application.add_handler(CommandHandler("stats", stats_command))
@@ -58,6 +79,12 @@ def main():
 
     # Add error handler
     application.add_error_handler(error_handler)
+
+    # Run the bot
+    # Start the keep-alive task as a background process
+    if config.KEEP_ALIVE_URL:
+        loop = asyncio.get_event_loop()
+        loop.create_task(keep_alive_task(config.KEEP_ALIVE_URL))
 
     # Run the bot
     logger.info("Starting Telegram Bot...")

@@ -103,54 +103,6 @@ async def check_user_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
         logger.error(f"Error checking user: {str(e)}")
         await update.message.reply_text(f"❌ Error checking user: {str(e)}")
 
-async def recharge_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle the /recharge command for account recharge"""
-    user_id = update.effective_user.id
-    
-    # Check if user is admin
-    if not is_admin_user(user_id):
-        await update.message.reply_text("❌ This command is only available to administrators.")
-        return
-    
-    if len(context.args) < 2:
-        await update.message.reply_text("❌ Usage: /recharge <user_id> <amount>")
-        return
-    
-    target_user_id = context.args[0]
-    try:
-        amount = float(context.args[1])
-        if amount <= 0:
-            await update.message.reply_text("❌ Amount must be greater than 0.")
-            return
-    except ValueError:
-        await update.message.reply_text("❌ Invalid amount. Please enter a valid number.")
-        return
-    
-    try:
-        # Show processing message
-        processing_msg = await update.message.reply_text(f"💳 Processing recharge for user `{target_user_id}`...")
-        
-        # Process recharge
-        result = await lucosms_client.recharge_user(target_user_id, amount)
-        
-        if result.get('success'):
-            success_text = f"""
-✅ **Recharge Successful**
-
-**User ID:** `{target_user_id}`
-**Amount:** ${amount:.2f}
-**New Balance:** ${result.get('new_balance', 'Unknown')}
-**Transaction ID:** `{result.get('transaction_id', 'N/A')}`
-            """
-            await processing_msg.edit_text(success_text, parse_mode='Markdown')
-        else:
-            error_msg = result.get('error', 'Unknown error occurred')
-            await processing_msg.edit_text(f"❌ Recharge failed: {error_msg}")
-    
-    except Exception as e:
-        logger.error(f"Error processing recharge: {str(e)}")
-        await update.message.reply_text(f"❌ Error processing recharge: {str(e)}")
-
 async def backup_file_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle the /backup command for file upload instructions"""
     backup_instructions = """
