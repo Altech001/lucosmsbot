@@ -5,6 +5,10 @@ Telegram Bot for User Management, Account Recharge, and File Backup
 
 import logging
 import os
+import asyncio
+import aiohttp
+
+
 from telegram.ext import (
     Application, CommandHandler, MessageHandler, CallbackQueryHandler, 
     ConversationHandler, filters
