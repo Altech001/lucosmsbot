@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Python-based Telegram bot that provides user management, account recharge, and file backup functionalities. The bot integrates with external APIs (LucoSMS for user management and Catbox for file storage) and includes administrative features with role-based access control.
+This is an advanced Python-based Telegram bot with anime-style menus that provides comprehensive entertainment and utility features. The bot includes YouTube downloading, AI-powered image generation, movie discovery, file backup, user management, and administrative controls with beautiful interactive menus.
 
 ## System Architecture
 
@@ -102,9 +102,14 @@ The application follows a modular architecture with clear separation of concerns
 ## Changelog
 
 - June 28, 2025: Initial setup and development completed
-- June 28, 2025: Bot successfully deployed with all requested features:
+- June 28, 2025: Enhanced bot with advanced features deployed:
+  - YouTube video/audio downloading with quality selection
+  - AI-powered image generation with Gemini
+  - Beautiful anime-style menus with inline keyboards
+  - Movie discovery from Telegram groups
+  - Image to sticker conversion
+  - Text sticker creation
   - User lookup with LucoSMS API integration
-  - Random cURL command generation
   - Account recharge functionality for admins
   - File backup using Catbox service
   - Administrative commands and controls
